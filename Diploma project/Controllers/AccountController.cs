@@ -25,7 +25,7 @@ namespace Diploma_project.Controllers
 
         [HttpGet, AllowAnonymous]
         public ActionResult Login() => PartialView();
-
+        
         [HttpGet]
         public ActionResult ListUsers() => View(db.Users.ToList());
 
