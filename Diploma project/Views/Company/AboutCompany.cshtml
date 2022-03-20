@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Diploma_project.Models.Services>
+
+@{
+    ViewBag.Title = "О компании";
+}
+
+<div class="container mb-5" style="min-height: 400px;">
+    <div class="row">
+        <h2 class="ml-4">О компании</h2>
+        <div class="col-3">
+            <div class="form-inline form-group bg-white">
+                @Html.ActionLink("О компании", "AboutCompany", "Company", null, new { @class = "col-12 btn btn-primary" })
+                @Html.ActionLink("Контактная информация", "Contact", "Company", null, new { @class = "col-12 btn" })
+                @if (User.IsInRole("section manager") || User.IsInRole("programmer") || User.IsInRole("direktor"))
+                {
+                    @Html.ActionLink("Добавить работу и услугу", "AddServices", "Company", null, new { @class = "col-12 btn" })
+                }
+            </div>
+        </div>
+        <div class="col-9 bg-white">
+            <div class="aboutcompany">
+                <p class="mt-3" style="text-indent: 2em; font-size: 1.1em;">
+                    <b>Открытое Акционерное Общество «Белэлектромонтаж»</b> - одна из старейших организаций Республики Беларусь, успешно функционирующая более 75 лет
+                    (год образования – 1944) на строительных рынках как Республики Беларусь, так и России, стран СНГ и дальнего зарубежья.
+                </p>
+                <p style="text-indent: 2em; font-size: 1.1em;">
+                    ОАО «Белэлектромонтаж» входит в структуру холдинга «БЕЛСТРОЙЦЕНТР-ХОЛДИНГ» и является подведомственной организацией Министерства архитектуры
+                    и строительства Республики Беларусь.
+                </p>
+                <p style="text-indent: 2em; font-size: 1.1em;">
+                    ОАО «Белэлектромонтаж», специализируется на выполнении электромонтажных и пусконаладочных работ по устройству
+                    наружных и внутренних сетей и линий электроснабжения до 330 кВ, электроосвещения, трансформаторных подстанций и распределительных устройств, систем автоматизации,
+                    слаботочных сетей и систем, специальных технологических систем на объектах промышленности, жилья, соцкультбыта, здравоохранения, связи.
+                </p>
+                <p style="text-indent: 2em; font-size: 1.1em;">
+                    В структуру ОАО «Белэлектромонтаж» входит 9 электромонтажных управлений с производственными мощностями по выпуску электротехнической продукции,
+                    которые расположены в 25 городах и промышленных центрах Республики Беларусь, а также филиал "Завод электромонтажных изделий" г.Минск,
+                    изготавливающий высоковольтное и низковольтное электротехническое оборудование, изделия и   конструкции.
+                </p>
+            </div>
+            <div class="services">
+                <h5 class="text-center" style="color: #151B8D ">Работа и услуги, оказываемые в организации</h5>
+                    @foreach (var item in Model)
+                    {
+                        <div align="right">
+                            @if (User.IsInRole("section manager") || User.IsInRole("programmer") || User.IsInRole("direktor"))
+                            {
+                                @Html.ActionLink("Изменить запись", "EditServices", "Company", new { id = item.Id }, new { @class = "text-decoration-none m-3" })
+                            }
+                            @if (User.IsInRole("programmer"))
+                            {
+                                @Html.ActionLink("Удалить запись", "DeleteServices", "Company", new { id = item.Id }, new { @class = "text-decoration-none m-3", @style = "color: red;" })
+                            }
+                        </div>
+                        <h6 class="text-left mt-2">@item.Tittle</h6>
+                        <ul>
+                            @Html.Raw("<li style='text-indent:1em; '>" + item.ListServices + "</li>")
+                        </ul>
+                    }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@model Diploma_project.ViewModels.SearchViewModel
+
+@{
+    ViewBag.Title = "Поиск";
+}
+
+<div class="container" style="min-height: 400px;">
+    <p class="mt-2"><a class="h6 text-decoration-none" href=@Url.Action("Index", "Home")>Главная </a>/<i> Поиск: @ViewBag.SearchInfo</i></p>
+    <div class="row">
+        <div class="col-12 bg-white">
+            <div class="row">
+                <p class="fs-5 fst-italic mt-2">Найденные новости и документы</p>
+                @foreach (var item in Model.News)
+                {
+                    string path = Convert.ToBase64String(@item.NewsImages.Where(u => u.NewsId == item.Id).FirstOrDefault().ImageString);
+                    <div class="col-3">
+                        <a href=@Url.Action("DetailsNews", "News", new { id = item.Id})>
+                            <img class="img-thumbnail w-100 mt-3 mb-3" style="height:80%!important; max-height:400px;" src="data:image/jpeg;base64,@path" alt="@item.Tittle" />
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            <span class="fw-light">@item.User.Email: @item.Date.ToLongDateString()</span>
+                            <br />
+                            <a href=@Url.Action("DetailsNews", "News", new { id = item.Id}) class="h4 text-decoration-none">@item.Tittle</a>
+                            <br />
+                            <span class="fst-italic">@item.LongDesc.Substring(0, item.LongDesc.IndexOf("</p>"))</span>
+                        </p>
+                    </div>
+                    <div class="col-3 mt-4">
+                        @if (User.IsInRole("secretary") || User.IsInRole("programmer") || User.IsInRole("direktor"))
+                        {
+                            <a class="btn btn-info" href=@Url.Action("EditNews", "News", new { id = item.Id })>Изменить</a>
+                        }
+                        @if (User.IsInRole("programmer"))
+                        {
+                            <a href=@Url.Action("DeleteNews", "News", new { id = item.Id }) class="btn btn-danger">Удалить</a>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="row">
+                @foreach (var item in Model.FilesDocuments)
+                {
+                    <div class="col-9 mt-2">
+                        <p>
+                            <span class="fw-light">@item.User.Email: @item.DatePublish.ToLongDateString()</span>
+                            <br />
+                            <a href=@Url.Action("ShowDocument", "Files", new { id = item.Id}) class="h5 link-dark">@item.Tittle</a>
+                        </p>
+                    </div>
+                    <div class="col-3 mt-3">
+                        <br />
+                        @if (User.IsInRole("programmer"))
+                        {
+                            <a class="h6 text-decoration-none pr-4" href=@Url.Action("EditDocument", "Files", new { id = item.Id })>Изменить</a>
+                            <a class="h6 text-decoration-none" style="color: red" href=@Url.Action("DeleteDocument", "Files", new { id = item.Id })>Удалить документ</a>
+                        }
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

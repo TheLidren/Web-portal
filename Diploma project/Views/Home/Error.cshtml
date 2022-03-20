@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "404 Error";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+@Styles.Render("~/Content/error.css")
+
+<div class="error-content container mt-5">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="error-text">
+                <h1 class="error">404 Error</h1>
+                <h4>Ой! Эта страница не может быть найдена!</h4>
+                <p>Извините. Страница, которую вы ищете, не существует, была удалена или изменена.</p>
+                <a href=@Url.Action("Index", "Home", null) class="btn btn-primary btn-round">Вернусь на главную</a>
+            </div>
+        </div>
+    </div>
+</div>

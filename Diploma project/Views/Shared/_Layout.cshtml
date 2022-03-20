@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="Content-Type" content="text/javascript; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/Header.css")
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital@1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://yastatic.net/share2/share.js" defer></script>
+</head>
+<body style=" background: #F8F8F8; ">
+    <nav class="container navbar navbar-expand-md navbar-fixed-top main-nav">
+        <div class="navbar-collapse collapse nav-content order-2">
+            <a href=@Url.Action("Index", "Home")><img src="~/Image/Logo.png" /></a>
+            <a class="text-decoration-none text-black" href=@Url.Action("Index", "Home")>
+                <div class="flex ml-3">
+                    <span class="font-weight-normal text-uppercase h5">Открытое акционерное общество</span>
+                    <span class="font-weight-bold text-upp5ercase h5">«БелЭлектроМонтаж»</span>
+                </div>
+            </a>
+        </div>
+        <div class="flex ml-auto navbar-collapse collapse nav-content order-3 order-md-3">
+            <span class="ml-4 mb-1">
+                <img src="~/Image/phone.svg" alt="">
+                Телефон:&nbsp;<a href="tel:+375173039022">+375 (17) 303-90-22</a>
+            </span>
+            <span>
+                <img src="~/Image/fax.svg" alt="">
+                Факс:&nbsp;<a href="tel:375173560745">+375 (17) 356-07-45</a>
+            </span>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-md navbar-fixed-top bg-primary main-nav">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Компания
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>@Html.ActionLink("О компании", "AboutCompany", "Company", null, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Контактная информация", "Contact", "Company", null, new { @class = "dropdown-item" })</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class=" nav-link dropdown-toggle text-white " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Директору
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>@Html.ActionLink("Задать вопрос", "SubmitQuestion", "Direktor", null, new { @class = "dropdown-item" })</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Новости", "ListNews", "News", null, new { @class = "nav-link text-white" })
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Галерея
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>@Html.ActionLink("Фотогалерея", "ListPhoto", "Galery", null, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Видеогалерея", "ListVideo", "Galery", null, new { @class = "dropdown-item" })</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Документооборот", "ListDocuments", "Files", null, new { @class = "nav-link text-white" })
+                    </li>
+                    @if (User.IsInRole("programmer"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Просмотреть
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>@Html.ActionLink("Пользователи", "ListUser", "Home", null, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Добавить должность", "CreatePosition", "Position", null, new { @class = "dropdown-item" })</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                @using (Html.BeginForm("SearchList", "Home", FormMethod.Post, new { @class = "d-flex mr-3" }))
+                {
+                    <input type="search" class="form-control" placeholder="Искать" name="searchInfo" value="@ViewBag.SearchInfo" />
+                    <span class="input-group-text border-0" id="search-addon">
+                        <button style="border: none; outline: none;">Поиск</button>
+                    </span>
+                }
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"> <img src="~/Image/user.png" /></button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href=@Url.Action("EditAccount", "Account")>Настройки</a></li>
+                            <li><a class="dropdown-item" href=@Url.Action("ChatAccount", "Chat")>Чат</a></li>
+                            <li><a class="dropdown-item" href=@Url.Action("ListDocumentsFavorites", "Files")>Избранное</a></li>
+                            <li><a class="dropdown-item" href=@Url.Action("Logout", "Account")>Выйти</a></li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    @Html.ActionLink("Войти", "Login", "Account", null, new { @class = "compItem btn btn-success my-2", @style = "width:115px" })
+                    }
+            </div>
+        </div>
+    </nav>
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+    @RenderBody()
+    <footer class="text-center text-lg-start text-muted" style="background: #EDEDED;">
+        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+            <div class="me-5 d-none d-lg-block">
+                <h4 class="lead">Следи за нами в социальных сетях:</h4>
+            </div>
+            <div>
+                <a href="https://vk.com/thelidren" target="_blank" class="m-4">
+                    <img src="~/Image/vk.png" alt="" />
+                </a>
+                <a href="https://vk.com/away.php?to=https%3A%2F%2Finstagram.com%2Faleksandrbondarev266%3Futm_medium%3Dcopy_link&cc_key=" target="_blank">
+                    <img src="~/Image/instagram.png" alt="" />
+                </a>
+                <a href="https://www.youtube.com/channel/UCZMCeefvl74zHKg4hKQCLKg" target="_blank" class="m-4">
+                    <img src="~/Image/youtube.png" alt="" />
+                </a>
+            </div>
+        </section>
+        <div class="text-center text-md-start mt-4">
+            <div class="row">
+                <div class="col-md-5 col-lg-6 col-xl-5 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold mb-3">
+                        <i class="fas fa-gem me-3"></i>О компании
+                    </h6>
+                    <p>
+                        ОАО «Белэлектромонтаж» - одна из старейших организаций Республики Беларусь, образованная в 1944 году.
+                    </p>
+                    <p>
+                        ОАО «Белэлектромонтаж» входит в структуру холдинга «БЕЛСТРОЙЦЕНТР-ХОЛДИНГ» и является подведомственной организацией Министерства архитектуры и строительства Республики Беларусь.
+                    </p>
+                    <p>
+                        Генеральный директор — Петрушин Павел Михайлович.
+                    </p>
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <h6 class="text-uppercase fw-bold mb-3">
+                        Полезные ссылки
+                    </h6>
+                    <p>
+                        @Html.ActionLink("Новости", "ListNews", "Home", null, new { @class = "text-reset" })
+                    </p>
+                    <p>
+                        @Html.ActionLink("Галерея", "ListPhoto", "Company", null, new { @class = "text-reset" })
+                    </p>
+                    <p>
+                        @Html.ActionLink("Задать вопрос", "SubmitQuestion", "Customer", null, new { @class = "text-reset" })
+                    </p>
+                    <p>
+                        @Html.ActionLink("Документооборот", "ListDocuments", "Files", null, new { @class = "text-reset" })
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-3">
+                    <h6 class="text-uppercase fw-bold mb-3">
+                        Контакты
+                    </h6>
+                    <p>Адрес: <a href="https://goo.gl/maps/WHBmZvzaXARo5vXB6">ул. Берестянская, 12, г. Минск, 220034</a></p>
+                    <p>E-mail: <a href="mailto:bem@bel-bem.by?subject=Задать вопрос">bem@bel-bem.by</a></p>
+                    <p>Телефон:&nbsp;<a href="tel:+375173039022">+375 (17) 303-90-22</a></p>
+                    <p>Факс:&nbsp;<a href="tel:+375173560745">+375 (17) 356-07-45</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-11 all_rights-wrapper">
+                        &copy; 2021 Авторские права: <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+                    </div>
+                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-11 alright">
+                        &copy; Открытое акционерное общество «Белэлектромонтаж»
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/index.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

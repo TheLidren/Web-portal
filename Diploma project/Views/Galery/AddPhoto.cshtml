@@ -1,0 +1,29 @@
+﻿@model Diploma_project.Models.FilesGalery
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+
+@{
+    ViewBag.Title = "Опубликовать фото";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+@using (Html.BeginForm("AddPhoto", "Galery", FormMethod.Post, new { enctype = "multipart/form-data", style = "min-height: 35em;" }))
+{
+    <div class="form-row">
+        <div class="ml-3 mt-3 form-group col-md-6">
+            @Html.LabelFor(m => m.Tittle, "Название медиа:", new { @class = "mb-2" })
+            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Tittle)
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.LabelFor(m => m.FileString, "Файл изображения:", new { @class = "mb-2" })
+            @Html.TextBox("uploadImage", null, new { type = "file", @class = "form-control", @id = "uploadImage", @accept = "image/*", multiple = "multiple" })
+            @Html.ValidationMessage("uploadImage")
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" class="ml-3 btn btn-primary" value="Опубликовать" />
+        </div>
+    </div>
+}
+
+

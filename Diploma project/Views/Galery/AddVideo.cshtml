@@ -1,0 +1,23 @@
+﻿@model Diploma_project.Models.FilesGalery
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+
+@{
+    ViewBag.Title = "Опубликовать видео";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+@using (Html.BeginForm("AddVideo", "Galery", FormMethod.Post, new { style = "min-height: 35em;" }))
+{
+    <div class="form-row">
+        <div class="ml-3 mt-3 form-group col-md-6">
+            @Html.LabelFor(m => m.Tittle, "Url видео:", new { @class = "mb-2" })
+            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control", type = "url", placeholder = "Url" })
+            @Html.ValidationMessageFor(m => m.Tittle)
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" class="ml-3 btn btn-primary" value="Опубликовать" />
+        </div>
+    </div>
+}
+

@@ -1,0 +1,74 @@
+﻿@model Diploma_project.ViewModels.NewsViewModel
+
+@{
+    ViewBag.Title = "Новости";
+}
+
+<style>
+    .carousel-item img {
+        width: 100%;
+        height: 30em;
+        object-fit: cover;
+    }
+</style>
+
+<div class="container mt-3 mb-5" style="min-height: 400px;">
+    <p class="mt-2">
+        <a class="h6 text-decoration-none" href=@Url.Action("Index", "Home")>Главная &#47; </a>
+        <a class="h6 text-decoration-none" href=@Url.Action("ListNews", "News")>Новости &#47; </a>
+        <i>@Model.News.Tittle</i>
+    </p>
+    <h4 class="mb-3">@Model.News.Tittle</h4>
+    <div id="carouselExampleControls" class="carousel slide">
+        <div class="carousel-inner">
+            @{
+                int count = 0;
+                foreach (var item in Model.Images)
+                {
+                    if (Model.Images.First() == item)
+                    {
+                        string path = Convert.ToBase64String(item.ImageString);
+                        <div class="carousel-item active">
+                            <a href="data:image/jpeg;base64,@path" data-fancybox="group_list_@item.NewsId">
+                                <img src="data:image/jpeg;base64,@path" class="d-block w-100" />
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        string path = Convert.ToBase64String(item.ImageString);
+                        <div class="carousel-item">
+                            <a href="data:image/jpeg;base64,@path" data-fancybox="group_list_@item.NewsId">
+                                <img src="data:image/jpeg;base64,@path" class="d-block w-100" />
+                            </a>
+                        </div>
+                        count++;
+                    }
+                }
+
+            }
+        </div>
+        @if (count > 0)
+        {
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+        }
+    </div>
+    <div class="bg-white">
+        <div class="p-4" style="font-size: 18px; font-family: 'Noto Sans', sans-serif; letter-spacing: 2px; text-indent: 2em;">
+            @Html.Raw("<p class='pb2' style='font-size:18px; font-family:'Noto Sans', sans-serif; letter-spacing: 2px; text-indent: 2em; '>" + Model.News.LongDesc + "</p>")
+        </div>
+        <div class="ya-share2 text-right mr-3 pb-3" data-services="vkontakte,twitter,facebook,odnoklassniki" data-size="l" data-title=@Model.News.Tittle data-counter></div>
+    </div>
+</div>
+
+<script src="https://yastatic.net/share2/share.js" async="async"></script>
+
+

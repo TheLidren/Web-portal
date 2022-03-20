@@ -1,0 +1,117 @@
+﻿@using reCAPTCHA.MVC;
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+
+@{
+    ViewBag.Title = "Задать вопрос";
+}
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0zBPhyhsts9XiGrWe6jsOVwmK4dcoDyE&v=3"></script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+<style>
+    #map_canvas img {
+        max-width: none
+    }
+    .infoDiv {
+        height: 200px;
+        width: 300px;
+        -webkit-user-select: none;
+        background-color: white;
+    }
+    body {
+        background: #F8F8F8;
+        margin: 0;
+        padding: 0;
+    }
+    label {
+        color: #333;
+    }
+    .btn-send {
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container pt-4 bg-white">
+    <h4 class="text-center mb-3">Наше главное управление: </h4>
+    <div id="map_canvas" style="height: 25em;"></div>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2" style="margin: auto">
+            <h4 class="pt-3 pb-3 text-center">Отправить сообщение:</h4>
+            @using (Html.BeginForm("SubmitQuestion", "Direktor", FormMethod.Post, new { enctype = "multipart/form-data", style = "min-height: 35em;" }))
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Surname", "Фамилия:", new { @class = "mb-2" })
+                            @Html.TextBox("Surname", null, new { type = "text", @class = "form-control", placeholder = "Фамилия сотрудника", @value = ViewBag.Surname })
+                            @Html.ValidationMessage("Surname")
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Name", "Имя:", new { @class = "mb-2" })
+                            @Html.TextBox("Name", null, new { type = "text", @class = "form-control", placeholder = "Имя сотрудника", @value = ViewBag.Name })
+                            @Html.ValidationMessage("Name")
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("EmailFrom", "Email:", new { @class = "mb-2" })
+                            @Html.TextBox("EmailFrom", (string)ViewBag.Email, new { @type = "email", @class = "form-control", placeholder = "Почта сотрудника" })
+                            @Html.ValidationMessage("EmailFrom")
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Phone", "Номер телефона:", new { @class = "mb-2" })
+                            @Html.TextBox("Phone", null, new { type = "tel", @class = "form-control", placeholder = "Номер телефона сотрудника" })
+                            @Html.ValidationMessage("Phone")
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("Subject", "Тема:", new { @class = "mb-2" })
+                            @Html.TextBox("Subject", null, new { type = "text", @class = "form-control", placeholder = "Тема сообщения" })
+                            @Html.ValidationMessage("Subject")
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("Message", "Сообщение:", new { @class = "mb-2" })
+                            @Html.TextArea("Message", new { @class = "form-control", @rows = "4" })
+                            @Html.ValidationMessage("Message")
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("uploadDocx", "Прикреплённые файлы:", new { @class = "mb-2" })
+                            @Html.TextBox("uploadDocx", null, new { type = "file", @class = "form-control", @id = "uploadDocx", multiple = "multiple" })
+                            @Html.ValidationMessage("uploadDocx")
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Recaptcha()
+                            @Html.ValidationMessage("ReCaptcha", "Подтвердите капчу")
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="submit" class="btn btn-success btn-send" value="Отправить сообещние">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/maps.js"></script>
+}
+

@@ -1,0 +1,35 @@
+﻿@model Diploma_project.ViewModels.LoginViewModel
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+<div class="modal-content">
+    <div class="modal-header">
+        <p class="h4 fw-normal">Пожалуйста, войдите</p>
+        @Html.ActionLink("Х", "Index", "Home")
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-floating text-center col-11" }))
+        {
+            @Html.AntiForgeryToken();
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Email, new { type = "email", @class = "form-control", @required = "required", @pattern = "[A-Za-z0-9._%+-](\\@mail.ru|\\@gmail.com)$", title = "Некорректный адрес (@mail.ru или @gmail.com)" })
+                @Html.LabelFor(m => m.Email, "Логин:", new { @class = "mb-2" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+            <br />
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Password, new { type = "password", @class = "form-control", @required = "required" })
+                @Html.LabelFor(m => m.Password, "Пароль:", new { @class = "mb-2" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <button class="w-75 mt-4 mb-2 btn btn-lg btn-primary" type="submit">Авторизация</button>
+            @Html.ActionLink("Регистрация", "Register", "Account", null, new { @class = "w-75 btn btn-lg btn-light" })
+            <br />
+            @Html.ActionLink("Забыли пароль?", "ForgotPassword", "Account", null, new { @class = "" })
+        }
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript" src="~/Scripts/index.js"></script>
+}

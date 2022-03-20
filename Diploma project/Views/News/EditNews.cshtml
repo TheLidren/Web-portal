@@ -1,0 +1,45 @@
+﻿@model Diploma_project.Models.News
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+
+@{
+    ViewBag.Title = "Изменить новость";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+@using (Html.BeginForm("EditNews", "News", FormMethod.Post, new { enctype = "multipart/form-data", style = "min-height: 35em;" }))
+{
+    <div class="form-row">
+        @Html.HiddenFor(m => m.Id)
+        @Html.AntiForgeryToken()
+        <div class="ml-3 mt-3 form-group col-md-6">
+            <h2>Изменить новость № @Model.Id</h2>
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.LabelFor(m => m.Tittle, "Заголовок:", new { @class = "mb-2" })
+            @Html.TextBoxFor(m => m.Tittle, new { type = "text", @class = "form-control", placeholder = "" })
+            @Html.ValidationMessageFor(m => m.Tittle)
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.LabelFor(m => m.Date, "Дата публикации:", new { @class = "mb-2" })
+            @Html.TextBoxFor(model => model.Date, new { type = "date", @class = "form-control", @Value = Model.Date.ToString("yyyy-MM-dd"), @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.Date)
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.LabelFor(m => m.LongDesc, "Описание новости:", new { @class = "mb-2" })
+            @Html.TextAreaFor(m => m.LongDesc, new { @class = "form-control", @rows = "5" })
+            @Html.ValidationMessageFor(m => m.LongDesc)
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.Label("uploadImage", "Опубликованные изображения:", new { @class = "mb-2" })
+            @Html.TextBox("uploadImage", null, new { type = "file", @class = "form-control", @id = "uploadImage", @accept = "image/*", multiple = "multiple" })
+            @Html.ValidationMessage("uploadImage")
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" class="ml-3 btn btn-primary" value="Сохранить изменения" />
+        </div>
+    </div>
+}
+
+
+

@@ -1,0 +1,151 @@
+﻿@model Diploma_project.ViewModels.ChatViewModel
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+
+@{
+    ViewBag.Title = "Беседа";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<style>
+    .my-block {
+        display: block;
+        border-radius: 15px;
+    }
+
+        .my-block:hover {
+            background: #f5f5f5;
+        }
+
+    .prokrutka {
+        height: 35em;
+        overflow-y: scroll;
+        border: 1px solid #C1C1C1;
+    }
+
+    .prokrutka::-webkit-scrollbar {
+        width: 7px;
+        background-color: #f9f9fd;
+    }
+</style>
+
+<div class="row">
+    <div class="col-8">
+        @if (Model.SelectUser != null)
+        {
+            <h5 class="mt-4 fw-light fst-italic">@Model.SelectUser.Name @Model.SelectUser.Surname @Model.SelectUser.Patronymic</h5>
+            <div class="prokrutka">
+                @foreach (var message in Model.Messages.OrderBy(m => m.When))
+                {
+                    string containerClass, timePosition, textAlign, contcolor, offset;
+                    if (User.Identity.Name == message.UserName)
+                    {
+                        containerClass = "container darker mt-2";
+                        timePosition = "time-right text-white";
+                        textAlign = "text-left text-white";
+                        contcolor = "bg-primary";
+                        offset = "col-6 offset-6";
+                    }
+                    else
+                    {
+                        containerClass = "container mt-2";
+                        timePosition = "time-left";
+                        textAlign = "text-left";
+                        contcolor = "bg-light";
+                        offset = "col-6";
+                    }
+                    if (message.Format == "txt")
+                    {
+                        <div class="row">
+                            <div class="@offset">
+                                <div class="@containerClass @contcolor" style="border-radius: 15px; ">
+                                    <p class="sender @textAlign">
+                                        @message.Text
+                                    </p>
+                                    <span class="@timePosition">
+                                        @message.When
+                                    </span>
+                                    @if (message.UserName == User.Identity.Name)
+                                    {
+                                        <a style="color: #ff4d4d;" href="@Url.Action("DeleteMessage", "Chat", new { messageId = message.Id })">Удалить</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="@offset">
+                                <div class="@containerClass @contcolor" style="border-radius: 15px; ">
+                                    <p class="sender @textAlign">
+                                        <a class="text-white" href="@Url.Action("DownloadFile", "Chat", new { messageId = message.Id })">@message.Text</a>
+                                    </p>
+                                    <span class="@timePosition">
+                                        @message.When
+                                    </span>
+                                    @if (message.UserName == User.Identity.Name)
+                                    {
+                                        <a style="color: #ff4d4d;" href="@Url.Action("DeleteMessage", "Chat", new { messageId = message.Id })">Удалить</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            using (Ajax.BeginForm("SendMessage", "Chat", FormMethod.Post, new AjaxOptions { UpdateTargetId = "results" }, new { enctype = "multipart/form-data", @class = "mb-4" }))
+            {
+                <div class="form-group row">
+                    @Html.TextArea("Text", null, new { @class = "ml-3 form-control col-9" })
+                    @Html.ValidationMessage("Text", "Обязательное поле")
+                    <input type="submit" value="Отправить" class="ml-3 btn btn-primary col-2" style="max-height: 3em" />
+                    @Html.TextBox("uploadChat", null, new { type = "file", @class = "ml-3 form-control col-6", @id = "uploadChat", @accept = ".pdf, .doc, .docx", multiple = "multiple" })
+                </div>
+                <input type="hidden" value="@User.Identity.Name" name="UserName" />
+                <input type="hidden" value="@DateTime.Now" name="When" />
+                <input type="hidden" value="@Model.SelectUser.Id" name="UserId" />
+            }
+        }
+        else
+        {
+            <h2 class="mt-4">Выберите переписку</h2>
+        }
+    </div>
+    <div class="col-4 mt-4" style="min-height: 35em;">
+        @foreach (var myName in Model.Users.Where(u => u.UserName == User.Identity.Name))
+        {
+            if (Model.SelectUser != null && myName.Id == Model.SelectUser.Id)
+            {
+                <a class="my-block text-decoration-none pl-2 pt-2" style="background: #87CEFA; " href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>
+                    <p class="h5 text-white" href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>Сохраненные сообщения</p>
+                    <p class="text-black pb-2">@myName.UserName</p>
+                </a>
+            }
+            else
+            {
+                <a class="my-block text-decoration-none pl-2 pt-2" href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>
+                    <p class="h5 text-black" href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>Сохраненные сообщения</p>
+                    <p class="pb-2">@myName.UserName</p>
+                </a>
+            }
+        }
+        @foreach (var userName in Model.Users.Where(u => u.UserName != User.Identity.Name))
+        {
+            if (Model.SelectUser != null && userName.Id == Model.SelectUser.Id)
+            {
+                <a class="my-block text-decoration-none pl-2 pt-2" style="background: #87CEFA; " href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>
+                    <p class="h5 text-white" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>@userName.Name @userName.Surname @userName.Patronymic</p>
+                    <p class="text-black pb-2">@userName.UserName</p>
+                </a>
+            }
+            else
+            {
+                <a class="my-block text-decoration-none pl-2 pt-2" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>
+                    <p class="h5 text-black" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>@userName.Name @userName.Surname @userName.Patronymic</p>
+                    <p class="pb-2">@userName.UserName</p>
+                </a>
+            }
+        }
+    </div>
+</div>

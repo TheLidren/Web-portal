@@ -1,0 +1,107 @@
+﻿@model Diploma_project.ViewModels.DocumentsViewModel
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+
+@{
+    ViewBag.Title = "Документооборот";
+}
+
+<style>
+    .prokrutka {
+        height: 80em;
+        overflow-y: scroll;
+        border: 1px solid #C1C1C1;
+    }
+
+    .prokrutka::-webkit-scrollbar {
+        width: 7px;
+        background-color: #f9f9fd;
+    }
+</style>
+
+<script type="text/javascript" src="~/Scripts/searchtextdoc.js"></script>
+
+<div class="ml-5 mr-5" style="min-height: 400px;">
+    <p class="mt-2">
+        <a class="h6 text-decoration-none" href=@Url.Action("Index", "Home")>Главная &#47; </a>
+        <a class="h6 text-decoration-none" href=@Url.Action("ListDocuments", "Files")>Документооборот &#47; </a>
+        <i>@Model.FilesDocuments.Tittle</i>
+    </p>
+    <h3>@Model.FilesDocuments.Tittle</h3>
+    <div class="row justify-content-end">
+        <div class="col-3">
+            <div class="bg-white">
+                <div class="form-group pb-3">
+                    <h6 class="fst-normal pt-2 pl-2">Критерий для поиска:</h6>
+                    <input type="text" id="text-to-find" class="form-control" placeholder="Введите текст">
+                    <div class="form-row m-auto pt-2">
+                        <a class="ml-3" href="@Url.Action("DownloadDocument", "Files", new { id = Model.FilesDocuments.Id})">
+                            <img src="~/Image/word.png" title="Скачать" alt="download" />
+                        </a>
+                        <a class="ml-3" href="@Url.Action("PrintDocument", "Files", new { id = Model.FilesDocuments.Id })">
+                            <img src="~/Image/print.png" title="Печать" alt="print" />
+                        </a>
+                        @if (Request.IsAuthenticated)
+                        {
+                            if (Model.FilesDocumentsFavorites == null)
+                            {
+                                <a class="ml-3" href="@Url.Action("SaveFavorites", "Files", new { id = Model.FilesDocuments.Id })">
+                                    <img src="~/Image/star.png" title="Сохранить" alt="favorites" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="ml-3" href="@Url.Action("SaveFavorites", "Files", new { id = Model.FilesDocuments.Id })">
+                                    <img src="~/Image/starfav.png" title="Сохранить" alt="favorites" />
+                                </a>
+                            }
+                        }
+                        <span>
+                            <input type="submit" class="btn btn-success pl-4 pr-4 mt-2 ml-3" onclick="javascript: FindOnPage('text-to-find'); return false;" value="Искать" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-9 bg-white" id="doc">
+            <div class="prokrutka p-4">
+                @Html.Raw(ViewBag.WordHtml)
+            </div>
+            <div class="ya-share2 text-right mr-3 mt-3 mb-3" data-services="vkontakte,twitter,facebook,odnoklassniki" data-size="l" data-title=@Model.FilesDocuments.Tittle data-counter></div>
+        </div>
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("SendComment", "Files", FormMethod.Get, new { @class = "mb-3 col-9" }))
+            {
+                <div class="row">
+                    @Html.TextArea("Text", null, new { @class = "form-control col-9 mt-2", @placeholder = "Оставьте комментарий" })
+                    @Html.ValidationMessage("Text", "Обязательное поле")
+                    <input type="submit" value="Отправить" class="ml-3 mt-3 btn btn-primary col-2" style="max-height: 3em" />
+                </div>
+                <input type="hidden" value="@Model.FilesDocuments.Id" name="FilesDocumentsId" />
+            }
+        }
+        @foreach (var message in Model.FilesDocumentsComments)
+        {
+            <div class="row col-9">
+                <div class="col-9">
+                    <div>
+                        <span class="fw-light">
+                            <span class="fw-normal" style="color: #000080">@message.UserName </span>
+                            (@message.When.ToShortDateString() в @message.When.ToShortTimeString())
+                        </span>
+                        <br />
+                        <p class="fs-6 fst-italic text-decoration-none" style="text-indent: 1.5em;">@message.Text</p>
+                    </div>
+                </div>
+                @if (User.IsInRole("programmer"))
+                {
+                    <div class="col-3">
+                        <a href=@Url.Action("DeleteComment", "Files", new { id = message.Id }) class="text-decoration-none" style="color: red">Удалить</a>
+                    </div>
+                }
+                <hr style="width: 98%" />
+            </div>
+        }
+    </div>
+</div>

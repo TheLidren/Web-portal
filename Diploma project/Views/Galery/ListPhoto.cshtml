@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Diploma_project.Models.FilesGalery>
+@Styles.Render("~/Content/galery.css")
+
+@{
+    ViewBag.Title = "Галерея";
+}
+
+<div class="container-fluid ml-3 mb-5" style="min-height: 400px; padding-right:10%;">
+    <div class="row">
+        <h2 class="ml-4">Фотогалерея</h2>
+        <div class="col-2">
+            <div class="form-inline form-group bg-white">
+                @Html.ActionLink("Фотогалерея", "ListPhoto", "Galery", null, new { @class = "col-12 btn btn-primary" })
+                @Html.ActionLink("Видеогалерея", "ListVideo", "Galery", null, new { @class = "col-12 btn" })
+                @if (Request.IsAuthenticated)
+                {
+                    @Html.ActionLink("Добавить фото", "AddPhoto", "Galery", null, new { @class = "col-12 btn" })
+                }
+            </div>
+        </div>
+        <div class="col-10 bg-white">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    string path = Convert.ToBase64String(item.FileString);
+                    <div class="picture col-lg-3">
+                        <a href="data:image/jpeg;base64,@path" data-fancybox="group_list_photo" data-caption="@item.User.Email: @item.Tittle">
+                            <img class="picture1 img-thumbnail mb-3" style="height: 13em; width: 100%" src="data:image/jpeg;base64,@path" />
+                        </a>
+                        <div class="picture2">
+                            @if (Request.IsAuthenticated)
+                            {
+                                <a href="@Url.Action("EditPhoto", "Galery", new { id = item.Id})">
+                                    <img src="~/Image/edit.png" alt="edit" />
+                                </a>
+                            }
+                            @if (User.IsInRole("programmer"))
+                            {
+                                <a href="@Url.Action("DeleteFilesGalery", "Galery", new { id = item.Id})">
+                                    <img src="~/Image/delete.png" alt="delete" />
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

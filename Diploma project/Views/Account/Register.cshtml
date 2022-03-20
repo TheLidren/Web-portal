@@ -1,0 +1,74 @@
+﻿@model Diploma_project.ViewModels.RegisterViewModel
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+
+@{
+    ViewBag.Title = "Регистрация";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+<div class="container pt-4">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2" style="margin: auto">
+            <h4 class="pt-3 pb-3 text-center">Регистрация нового пользователя:</h4>
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { style = "min-height: 35em;" }))
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Surname, "Фамилия:", new { @class = "mb-2" })
+                            @Html.TextBoxFor(m => m.Surname, new { type = "text", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Surname)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Name, "Имя:", new { @class = "mb-2" })
+                            @Html.TextBoxFor(m => m.Name, new { type = "text", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Name)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Patronymic, "Отчество:", new { @class = "mb-2" })
+                            @Html.TextBoxFor(m => m.Patronymic, new { type = "text", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Patronymic)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PositionId, "Должность:", new { @class = "mb-2" })
+                            @Html.DropDownListFor(model => model.PositionId, (SelectList)ViewBag.positions, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PositionId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email, "Email:", new { @class = "mb-2" })
+                            @Html.TextBoxFor(m => m.Email, new { type = "email", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, "Пароль:", new { @class = "mb-2" })
+                            @Html.TextBoxFor(m => m.Password, new { type = "password", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PasswordConfirm, "Подтвердите пароль:", new { @class = "mb-2" })
+                            @Html.TextBoxFor(m => m.PasswordConfirm, new { type = "password", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PasswordConfirm)
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="submit" class="mt-3 btn btn-primary" value="Зарегестрироваться" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

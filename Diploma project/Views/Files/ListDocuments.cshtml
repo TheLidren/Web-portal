@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Diploma_project.Models.FilesDocuments>
+
+@{
+    ViewBag.Title = "Документооборот";
+}
+
+<div class="container" style="min-height: 400px;">
+    <p class="mt-2"><a class="h6 text-decoration-none" href=@Url.Action("Index", "Home")>Главная </a>/<i> Документооборот</i></p>
+    <h4>Документооборот</h4>
+    <div class="row mb-5">
+        <div class="col-12 bg-white">
+            <div class="row">
+                @if (Request.IsAuthenticated)
+                {
+                    @Html.ActionLink("Опубликовать документ", "AddDocument", "Files", null, new { @class = "text-decoration-none mt-2" })
+                }
+                @foreach (var item in Model)
+                {
+                    <div class="col-9 mt-3">
+                        <p>
+                            <span class="fw-light">@item.User.Email: @item.DatePublish.ToLongDateString()</span>
+                            <br />
+                            <a href=@Url.Action("ShowDocument", "Files", new { id = item.Id}) class="h5 link-dark">@item.Tittle</a>
+                        </p>
+                    </div>
+                    <div class="col-3 mt-3">
+                        <br />
+                        @if (item.User.UserName == User.Identity.Name || User.IsInRole("programmer"))
+                        {
+                            <a class="h6 text-decoration-none pr-4" href=@Url.Action("EditDocument", "Files", new { id = item.Id })>Изменить</a>
+                        }
+                        @if (User.IsInRole("programmer"))
+                        {
+                            <a class="h6 text-decoration-none" style="color: red" href=@Url.Action("DeleteDocument", "Files", new { id = item.Id })>Удалить документ</a>
+                        }
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

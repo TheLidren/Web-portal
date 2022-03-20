@@ -1,0 +1,30 @@
+﻿@model Diploma_project.Models.Services
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+@{
+    ViewBag.Title = "Изменить услугу";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+@using (Html.BeginForm("EditServices", "Company", FormMethod.Post, new { style = "min-height: 35em;" }))
+{
+    <div class="form-row">
+        @Html.HiddenFor(m => m.Id)
+        <div class="ml-3 mt-3 form-group col-md-6">
+            <h2>Изменить услугу № @Model.Id</h2>
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.LabelFor(m => m.Tittle, "Название раздела услуг:", new { @class = "mb-2" })
+            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Tittle)
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.LabelFor(m => m.ListServices, "Выполняемые услуги:", new { @class = "mb-2" })
+            @Html.TextAreaFor(m => m.ListServices, new { @class = "form-control", @rows = "8" })
+            @Html.ValidationMessageFor(m => m.ListServices)
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" class="ml-3 btn btn-primary" value="Сохранить изменения" />
+        </div>
+    </div>
+}

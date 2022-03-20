@@ -1,0 +1,23 @@
+﻿@model Diploma_project.Models.Position
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+@{
+    ViewBag.Title = "Добавить должность";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+<h2 class="mt-2">Добавить должность</h2>
+@using (Html.BeginForm("CreatePosition", "Position", FormMethod.Post, new { style = "min-height: 35em;" }))
+{
+    <div class="form-row">
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.Tittle, "Название должности:", new { @class = "mb-2" })
+            @Html.TextBoxFor(m => m.Tittle, new { type = "text", @class = "form-control w-50", placeholder = "Должность" })
+            @Html.ValidationMessageFor(m => m.Tittle)
+        </div>
+        <div class="form-group col-12">
+            <input type="submit" class="btn btn-primary" value="Добавить" />
+        </div>
+    </div>
+}
+
+

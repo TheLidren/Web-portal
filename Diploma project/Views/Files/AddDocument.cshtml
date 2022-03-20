@@ -1,0 +1,33 @@
+﻿@model Diploma_project.Models.FilesDocuments
+@Html.ValidationSummary(true)
+@Styles.Render("~/Content/ValidCreate.css")
+
+@{
+    ViewBag.Title = "Опубликовать документ";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+@using (Html.BeginForm("AddDocument", "Files", FormMethod.Post, new { enctype = "multipart/form-data", style = "min-height: 35em;" }))
+{
+    <div class="form-row">
+        <div class="ml-3 mt-3 form-group col-md-6">
+            @Html.LabelFor(m => m.Tittle, "Заголовок:", new { @class = "mb-2" })
+            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Tittle)
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.LabelFor(m => m.DatePublish, "Дата публикации:", new { @class = "mb-2" })
+            @Html.TextBoxFor(model => model.DatePublish, new { type = "date", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DatePublish)
+        </div>
+        <div class="ml-3 form-group col-md-6">
+            @Html.Label("uploadDocx", "Документ для публикации:", new { @class = "mb-2" })
+            @Html.TextBox("uploadDocx", null, new { type = "file", @class = "form-control", @id = "uploadDocx", @accept = ".pdf, .doc, .docx" })
+            @Html.ValidationMessage("uploadDocx")
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" class="ml-3 btn btn-primary" value="Опубликовать" />
+        </div>
+    </div>
+}
+

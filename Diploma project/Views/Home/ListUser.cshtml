@@ -1,0 +1,62 @@
+﻿@model Diploma_project.ViewModels.UserPositionViewModel
+
+@{
+    ViewBag.Title = "Пользователи";
+    Layout = "~/Views/Shared/_Layout4.cshtml";
+}
+
+<div class="container-fluid row" style="min-height: 35em;">
+    <div class="col-8">
+        <h4 class="text-center mt-3">Зарегестрированные пользователи:</h4>
+        <table class="m-3 table table-bordered">
+            <tr align="center">
+                <th>Ф.И.О.</th>
+                <th>Должность</th>
+                <th>Email</th>
+                <th>Аккаунт</th>
+                <th>Действие</th>
+            </tr>
+
+            @foreach (var item in Model.Users)
+            {
+                <tr>
+                    <td>@item.Surname @item.Name @item.Patronymic</td>
+                    <td>@item.Position.Tittle</td>
+                    <td>@item.Email</td>
+                    @if (item.EmailConfirmed)
+                    {
+                        <td>Подтвержден</td>
+                    }
+                    else
+                    {
+                        <td>Неподтвержден</td>
+                    }
+                    <td align="center">
+                        @Html.ActionLink("Роли", "EditRole", "Account", new { userId = item.Id }, new { @class = "compItem text-decoration-none" })
+                        @*@Html.ActionLink("Удалить", "DeleteAccount", "Account", new { userId = item.Id }, new { @class = "text-decoration-none", @style = "color: red;" })*@
+                    </td>             
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-4">
+        <h4 class="text-center mt-3">Должности организации:</h4>
+        <table class="m-3 table table-bordered">
+            <tr align="center">
+                <th>Название</th>
+                <th>Действие</th>
+            </tr>
+
+            @foreach (var item in Model.Positions)
+            {
+                <tr>
+                    <td>@item.Tittle</td>
+                    <td align="center">
+                        @Html.ActionLink("Редактировать", "EditPosition", "Position", new { positionid = item.Id }, new { @class = "compItem text-decoration-none" })
+                        @Html.ActionLink("Удалить", "DeletePosition", "Position", new { positionid = item.Id }, new { @class = "text-decoration-none", @style = "color: red;" })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
