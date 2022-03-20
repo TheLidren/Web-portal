@@ -23,6 +23,7 @@ namespace Diploma_project.Controllers
         User user;
         List<Message> messageList;
         readonly Regex trimmerspace = new(@"\s\s+");
+
         private ApplicationUserManager UserManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
         private ApplicationRoleManager RoleManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
 

@@ -239,5 +239,6 @@ namespace Diploma_project.Controllers
             ViewBag.WordHtml = wordHTML.Substring(wordHTML.IndexOf("<div class=WordSection1>"));
             return View();
         }
+
     }
 }
