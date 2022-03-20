@@ -341,8 +341,5 @@ namespace Diploma_project.Controllers
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claim);
             return RedirectToAction("ListUser", "Home");
         }
-
-
-
     }
 }

@@ -17,7 +17,6 @@ namespace Diploma_project.Controllers
     [Authorize(Roles = "secretary, programmer, direktor")]
     public class NewsController : Controller
     {
-
         readonly PortalContext db = new();
         User user;
         readonly Regex trimmerspace = new(@"\s\s+");
