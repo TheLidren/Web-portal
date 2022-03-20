@@ -14,7 +14,6 @@ namespace Diploma_project.Controllers
     [Authorize]
     public class GaleryController : Controller
     {
-
         readonly PortalContext db = new();
         User user;
         readonly Regex trimmerspace = new(@"\s\s+");

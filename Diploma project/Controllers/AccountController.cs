@@ -19,11 +19,8 @@ namespace Diploma_project.Controllers
     {
         readonly PortalContext db = new();
         User user;
-
         private ApplicationUserManager UserManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
-
         private IAuthenticationManager AuthenticationManager { get => HttpContext.GetOwinContext().Authentication; }
-
         private ApplicationRoleManager RoleManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
 
         [HttpGet, AllowAnonymous]
@@ -341,8 +338,5 @@ namespace Diploma_project.Controllers
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claim);
             return RedirectToAction("ListUser", "Home");
         }
-
-
-
     }
 }

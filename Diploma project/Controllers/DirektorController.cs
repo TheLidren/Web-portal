@@ -35,10 +35,8 @@ namespace Diploma_project.Controllers
             {
                 email.SendEmailAsync(email, uploadDocx);
                 return RedirectToAction("SubmitQuestion");
-
             }
             return View(email);
         }
-
     }
 }

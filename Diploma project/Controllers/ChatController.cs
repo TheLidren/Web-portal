@@ -18,12 +18,10 @@ namespace Diploma_project.Controllers
     [Authorize]
     public class ChatController : Controller
     {
-       //.Where(u => u.Roles.Any(r => r.RoleId != role.Id))
         readonly PortalContext db = new();
         User user;
         List<Message> messageList;
         readonly Regex trimmerspace = new(@"\s\s+");
-
         private ApplicationUserManager UserManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
         private ApplicationRoleManager RoleManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
 
