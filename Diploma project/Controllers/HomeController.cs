@@ -8,7 +8,6 @@ namespace Diploma_project.Controllers
 {
     public class HomeController : Controller
     {
-
         readonly PortalContext db = new();
 
         [AllowAnonymous, HttpGet]
