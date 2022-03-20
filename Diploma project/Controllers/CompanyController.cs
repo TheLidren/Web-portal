@@ -13,7 +13,6 @@ namespace Diploma_project.Controllers
     [Authorize]
     public class CompanyController : Controller
     {
-
         readonly PortalContext db = new();
         readonly Regex trimmerspace = new(@"\s\s+");
         User user;
@@ -160,7 +159,5 @@ namespace Diploma_project.Controllers
             }
             return View(services);
         }
-
     }
-
 }

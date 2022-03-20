@@ -39,6 +39,5 @@ namespace Diploma_project.Controllers
             }
             return View(email);
         }
-
     }
 }

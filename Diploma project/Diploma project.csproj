@@ -230,7 +230,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Models\FilesDocumentsFavorites.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ApplicationRoleManager.cs" />
