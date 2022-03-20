@@ -87,6 +87,7 @@ namespace Diploma_project.Controllers
             return View(viewModel);
         }
 
+
         [HttpGet, Authorize]
         public ActionResult AddDocument() => View();
 
@@ -238,5 +239,6 @@ namespace Diploma_project.Controllers
             ViewBag.WordHtml = wordHTML.Substring(wordHTML.IndexOf("<div class=WordSection1>"));
             return View();
         }
+
     }
 }

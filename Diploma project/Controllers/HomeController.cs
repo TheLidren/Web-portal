@@ -8,6 +8,7 @@ namespace Diploma_project.Controllers
 {
     public class HomeController : Controller
     {
+
         readonly PortalContext db = new();
 
         [AllowAnonymous, HttpGet]
@@ -26,7 +27,6 @@ namespace Diploma_project.Controllers
             };
             return View(viewModel);
         }
-
         [HttpPost, AllowAnonymous]
         public ActionResult SearchList(string searchInfo)
         {

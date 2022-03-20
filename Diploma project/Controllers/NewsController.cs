@@ -17,10 +17,12 @@ namespace Diploma_project.Controllers
     [Authorize(Roles = "secretary, programmer, direktor")]
     public class NewsController : Controller
     {
+
         readonly PortalContext db = new();
         User user;
         readonly Regex trimmerspace = new(@"\s\s+");
         private ApplicationUserManager UserManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+
         readonly string replace = "</p><p class='pb-2' style='font-size: 18px; font-family: 'Noto Sans', sans-serif; letter-spacing: 2px; text-indent: 2em; '>";
 
         [HttpGet, AllowAnonymous]
@@ -68,6 +70,7 @@ namespace Diploma_project.Controllers
                 News = db.News.Where(u => u.Id == id).FirstOrDefault(),
                 Images = db.NewsImages.Where(u => u.NewsId == id).ToList()
             };
+
             return View(viewModel);
         }
 
