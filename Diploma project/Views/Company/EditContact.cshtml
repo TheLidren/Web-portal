@@ -16,22 +16,22 @@
     </div>
     <div class="ml-3 form-group col-md-6">
         @Html.LabelFor(m => m.Surname, "Фамилия:", new { @class = "mb-2" })
-        @Html.TextBoxFor(m => m.Surname, new { type = "text", @class = "form-control", placeholder = "Садовская" })
+        @Html.TextBoxFor(m => m.Surname, new { type = "text", @class = "form-control", placeholder = "Введите фамилию" })
         @Html.ValidationMessageFor(m => m.Surname)
     </div>
     <div class="ml-3 form-group col-md-6">
         @Html.LabelFor(m => m.Name, "Имя:", new { @class = "mb-2" })
-        @Html.TextBoxFor(m => m.Name, new { type = "text", @class = "form-control", placeholder = "Валентина" })
+        @Html.TextBoxFor(m => m.Name, new { type = "text", @class = "form-control", placeholder = "Введите имя" })
         @Html.ValidationMessageFor(m => m.Name)
     </div>
     <div class="ml-3 form-group col-md-6">
         @Html.LabelFor(m => m.Patronymic, "Отчество:", new { @class = "mb-2" })
-        @Html.TextBoxFor(m => m.Patronymic, new { type = "text", @class = "form-control", placeholder = "Леонидовна" })
+        @Html.TextBoxFor(m => m.Patronymic, new { type = "text", @class = "form-control", placeholder = "Введите отчество" })
         @Html.ValidationMessageFor(m => m.Patronymic)
     </div>
     <div class="ml-3 form-group col-md-6">
         @Html.LabelFor(m => m.PhoneNumber, "Номер телефона:", new { @class = "mb-2" })
-        @Html.TextBoxFor(m => m.PhoneNumber, new { type = "text", @class = "form-control", placeholder = "+375256107330" })
+        @Html.TextBoxFor(m => m.PhoneNumber, new { type = "text", @class = "form-control", placeholder = "Введите номер телефона РБ" })
         @Html.ValidationMessageFor(m => m.PhoneNumber)
     </div>
     <div class="ml-3 form-group col-md-6">

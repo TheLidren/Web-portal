@@ -12,7 +12,7 @@
     <div class="form-row">
         <div class="ml-3 mt-3 form-group col-md-6">
             @Html.LabelFor(m => m.Tittle, "Название медиа:", new { @class = "mb-2" })
-            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control", placeholder = "Введите название" })
             @Html.ValidationMessageFor(m => m.Tittle)
         </div>
         <div class="ml-3 form-group col-md-6">

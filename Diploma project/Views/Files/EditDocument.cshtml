@@ -19,7 +19,7 @@
         </div>
         <div class="m3-3 form-group col-md-6">
             @Html.LabelFor(m => m.Tittle, "Заголовок:", new { @class = "mb-2" })
-            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control", placeholder = "Введите заглавие" })
             @Html.ValidationMessageFor(m => m.Tittle)
         </div>
         <div class="m3-3 form-group col-md-6">

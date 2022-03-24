@@ -16,21 +16,21 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(m => m.Surname, "Фамилия:", new { @class = "mb-2" })
-                            @Html.TextBoxFor(m => m.Surname, new { type = "text", @class = "form-control" })
+                            @Html.TextBoxFor(m => m.Surname, new { type = "text", @class = "form-control", placeholder = "Введите фамилию" })
                             @Html.ValidationMessageFor(m => m.Surname)
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(m => m.Name, "Имя:", new { @class = "mb-2" })
-                            @Html.TextBoxFor(m => m.Name, new { type = "text", @class = "form-control" })
+                            @Html.TextBoxFor(m => m.Name, new { type = "text", @class = "form-control", placeholder = "Введите имя" })
                             @Html.ValidationMessageFor(m => m.Name)
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(m => m.Patronymic, "Отчество:", new { @class = "mb-2" })
-                            @Html.TextBoxFor(m => m.Patronymic, new { type = "text", @class = "form-control" })
+                            @Html.TextBoxFor(m => m.Patronymic, new { type = "text", @class = "form-control", placeholder = "Введите отчество" })
                             @Html.ValidationMessageFor(m => m.Patronymic)
                         </div>
                     </div>
@@ -46,14 +46,14 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             @Html.LabelFor(m => m.Email, "Email:", new { @class = "mb-2" })
-                            @Html.TextBoxFor(m => m.Email, new { type = "email", @class = "form-control" })
+                            @Html.TextBoxFor(m => m.Email, new { type = "email", @class = "form-control", placeholder = "Введите email" })
                             @Html.ValidationMessageFor(m => m.Email)
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(m => m.Password, "Пароль:", new { @class = "mb-2" })
-                            @Html.TextBoxFor(m => m.Password, new { type = "password", @class = "form-control" })
+                            @Html.TextBoxFor(m => m.Password, new { type = "password", @class = "form-control", placeholder = "Введите пароль" })
                             @Html.ValidationMessageFor(m => m.Password)
                         </div>
                     </div>

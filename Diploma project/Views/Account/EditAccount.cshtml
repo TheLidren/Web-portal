@@ -27,21 +27,21 @@
         <div class="form-group row mt-4">
             @Html.LabelFor(m => m.EditAccountView.Surname, "Фамилия:", new { @class = "col-3 col-form-label" })
             <div class="col-6">
-                @Html.TextBoxFor(m => m.EditAccountView.Surname, new { type = "text", @class = "form-control", placeholder = "Садовская" })
+                @Html.TextBoxFor(m => m.EditAccountView.Surname, new { type = "text", @class = "form-control", placeholder = "Введите фамилию" })
                 @Html.ValidationMessageFor(m => m.EditAccountView.Surname)
             </div>
         </div>
         <div class="form-group row">
             @Html.LabelFor(m => m.EditAccountView.Name, "Имя:", new { @class = "col-3 col-form-label" })
             <div class="col-6">
-                @Html.TextBoxFor(m => m.EditAccountView.Name, new { type = "text", @class = "form-control", placeholder = "Валентина" })
+                @Html.TextBoxFor(m => m.EditAccountView.Name, new { type = "text", @class = "form-control", placeholder = "Введите имя" })
                 @Html.ValidationMessageFor(m => m.EditAccountView.Name)
             </div>
         </div>
         <div class="form-group row">
             @Html.LabelFor(m => m.EditAccountView.Patronymic, "Отчество:", new { @class = "col-3 col-form-label" })
             <div class="col-6">
-                @Html.TextBoxFor(m => m.EditAccountView.Patronymic, new { type = "text", @class = "form-control", placeholder = "Леонидовна" })
+                @Html.TextBoxFor(m => m.EditAccountView.Patronymic, new { type = "text", @class = "form-control", placeholder = "Введите отчество" })
                 @Html.ValidationMessageFor(m => m.EditAccountView.Patronymic)
             </div>
         </div>
@@ -62,7 +62,7 @@
         <div class="form-group row">
             @Html.LabelFor(m => m.EditEmailView.Email, "Email:", new { @class = "col-3 col-form-label" })
             <div class="col-6">
-                @Html.TextBoxFor(m => m.EditEmailView.Email, new { type = "email", @class = "form-control" })
+                @Html.TextBoxFor(m => m.EditEmailView.Email, new { type = "email", @class = "form-control", placeholder = "Введите email" })
                 @Html.ValidationMessageFor(m => m.EditEmailView.Email)
             </div>
             <input type="submit" class="btn btn-info col-2" value="Изменить" />

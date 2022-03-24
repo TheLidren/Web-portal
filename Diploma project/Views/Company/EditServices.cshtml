@@ -15,12 +15,12 @@
         </div>
         <div class="ml-3 form-group col-md-6">
             @Html.LabelFor(m => m.Tittle, "Название раздела услуг:", new { @class = "mb-2" })
-            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control", placeholder = "Введите название раздела" })
             @Html.ValidationMessageFor(m => m.Tittle)
         </div>
         <div class="ml-3 form-group col-md-6">
             @Html.LabelFor(m => m.ListServices, "Выполняемые услуги:", new { @class = "mb-2" })
-            @Html.TextAreaFor(m => m.ListServices, new { @class = "form-control", @rows = "8" })
+            @Html.TextAreaFor(m => m.ListServices, new { @class = "form-control", @rows = "8", placeholder = "Перечислите оказываемые услуги" })
             @Html.ValidationMessageFor(m => m.ListServices)
         </div>
         <div class="form-group col-md-6">
