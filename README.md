@@ -42,11 +42,12 @@
 Требования к  программному обеспечению:
 1. пакет Microsoft NET-SDK 8.0;
 2. веб-сервер Nginx (Apache, IIS);
-3. СУБД «MySQL» 6.0 и выше.
+3. Операционная система Windows 7 и выше;
+4. СУБД «MySQL» 6.0 и выше.
 
 Для корректной работы необходимо указать корректную строку подключения для работы с базой данных MySql `Diploma project/Web.config`.
 
-<img src="ShopComp/Images/ConnString.png" alt="ConnString" height=100 />
+<img src="Diploma project/Image/ReadmeImg/ConnString.png" alt="ConnString" height=100 />
 
 Технологии и компоненты: Asp.Net MVC, Entity Framework, C#, Bootstrap, HTML5, CSS3, JavaScript, MailKit, ReCaptch.MVC, Google.Protobuf
 
@@ -63,6 +64,6 @@
 #### Лицензия:
 
 <a name="license"></a>
-> GitHub [@TheLidren](fdhjfkdjfk)
-LinkedIn [@Vladislav Misevich](fdhjfkdjfk)
+> GitHub [@TheLidren](https://github.com/TheLidren)
+LinkedIn [@Vladislav Misevich](https://linkedin.com/in/TheLidren)
 <hr/>
