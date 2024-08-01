@@ -23,36 +23,40 @@
         border: 1px solid #C1C1C1;
     }
 
-    .prokrutka::-webkit-scrollbar {
-        width: 7px;
-        background-color: #f9f9fd;
-    }
+        .prokrutka::-webkit-scrollbar {
+            width: 7px;
+            background-color: #f9f9fd;
+        }
 </style>
 
 <div class="row">
     <div class="col-8">
         @if (Model.SelectUser != null)
         {
-            <h5 class="mt-4 fw-light fst-italic">@Model.SelectUser.Name @Model.SelectUser.Surname @Model.SelectUser.Patronymic</h5>
+            <h5 class="mt-4 fw-light fst-italic">@Model.SelectUser.Name @Model.SelectUser.Surname @Model.SelectUser.Patronymic - @Model.SelectUser.Position.Tittle</h5>
             <div class="prokrutka">
-                @foreach (var message in Model.Messages.OrderBy(m => m.When))
+                @if (ViewBag.Count > Model.Messages.Count())
+                {
+                    <a class="mb-1 text-decoration-none" style="display: block; text-align: center;" href=@Url.Action("ChatAccount", "Chat", new { userId = Model.SelectUser.Id, id = ViewBag.Page + 1})>Показать ещё</a>
+                }
+                @foreach (var message in Model.Messages)
                 {
                     string containerClass, timePosition, textAlign, contcolor, offset;
                     if (User.Identity.Name == message.UserName)
                     {
                         containerClass = "container darker mt-2";
                         timePosition = "time-right text-white";
-                        textAlign = "text-left text-white";
+                        textAlign = "text-left text-white pt-2";
                         contcolor = "bg-primary";
-                        offset = "col-6 offset-6";
+                        offset = "col-8 offset-4";
                     }
                     else
                     {
                         containerClass = "container mt-2";
                         timePosition = "time-left";
-                        textAlign = "text-left";
+                        textAlign = "text-left pt-2";
                         contcolor = "bg-light";
-                        offset = "col-6";
+                        offset = "col-8";
                     }
                     if (message.Format == "txt")
                     {
@@ -94,7 +98,7 @@
                     }
                 }
             </div>
-            using (Ajax.BeginForm("SendMessage", "Chat", FormMethod.Post, new AjaxOptions { UpdateTargetId = "results" }, new { enctype = "multipart/form-data", @class = "mb-4" }))
+            using (Html.BeginForm("SendMessage", "Chat", FormMethod.Post, new { enctype = "multipart/form-data", @class = "mb-4" }))
             {
                 <div class="form-group row">
                     @Html.TextArea("Text", null, new { @class = "ml-3 form-control col-9" })
@@ -117,14 +121,14 @@
         {
             if (Model.SelectUser != null && myName.Id == Model.SelectUser.Id)
             {
-                <a class="my-block text-decoration-none pl-2 pt-2" style="background: #87CEFA; " href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>
+                <a class="my-block text-decoration-none pl-2 pt-2" title="@myName.Position.Tittle" style="background: #87CEFA; " href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>
                     <p class="h5 text-white" href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>Сохраненные сообщения</p>
                     <p class="text-black pb-2">@myName.UserName</p>
                 </a>
             }
             else
             {
-                <a class="my-block text-decoration-none pl-2 pt-2" href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>
+                <a class="my-block text-decoration-none pl-2 pt-2" title="@myName.Position.Tittle" href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>
                     <p class="h5 text-black" href=@Url.Action("ChatAccount", "Chat", new { userId = myName.Id })>Сохраненные сообщения</p>
                     <p class="pb-2">@myName.UserName</p>
                 </a>
@@ -134,15 +138,19 @@
         {
             if (Model.SelectUser != null && userName.Id == Model.SelectUser.Id)
             {
-                <a class="my-block text-decoration-none pl-2 pt-2" style="background: #87CEFA; " href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>
-                    <p class="h5 text-white" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>@userName.Name @userName.Surname @userName.Patronymic</p>
+                <a class="my-block text-decoration-none pl-2 pt-2" style="background: #87CEFA;" title="@userName.Position.Tittle" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>
+                    <p class="h5 text-white" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>@userName.Surname @userName.Name @userName.Patronymic</p>
                     <p class="text-black pb-2">@userName.UserName</p>
                 </a>
             }
             else
             {
-                <a class="my-block text-decoration-none pl-2 pt-2" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>
-                    <p class="h5 text-black" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>@userName.Name @userName.Surname @userName.Patronymic</p>
+                <a class="my-block text-decoration-none pl-2 pt-2" title="@userName.Position.Tittle" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>
+                    @if (Model.ReadMessage.Where(u => u.UserName == userName.UserName).Count() > 0)
+                    {
+                        <span class="text-black-50">Пропущенные сообщения</span>
+                    }
+                    <p class="h5 text-black" href=@Url.Action("ChatAccount", "Chat", new { userId = userName.Id })>@userName.Surname @userName.Name @userName.Patronymic</p>
                     <p class="pb-2">@userName.UserName</p>
                 </a>
             }

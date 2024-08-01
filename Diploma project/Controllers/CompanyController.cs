@@ -27,7 +27,21 @@ namespace Diploma_project.Controllers
         }
 
         [HttpGet, AllowAnonymous]
-        public ActionResult Contact() => View(db.Contacts.Include(u => u.Position).ToList());
+        public ActionResult Contact(SortStateContact sortOrder = SortStateContact.SurnameAsc)
+        {
+            IQueryable<ContactInformation> contacts = db.Contacts.Include(x => x.Position);
+
+            ViewData["SurnameSort"] = sortOrder == SortStateContact.SurnameAsc ? SortStateContact.SurnameDesc : SortStateContact.SurnameAsc;
+            ViewData["PositionSort"] = sortOrder == SortStateContact.PositionAsc ? SortStateContact.PositionDesc : SortStateContact.PositionAsc;
+            contacts = sortOrder switch
+            {
+                SortStateContact.SurnameDesc => contacts.OrderByDescending(s => s.Surname),
+                SortStateContact.PositionAsc => contacts.OrderBy(s => s.Position.Tittle),
+                SortStateContact.PositionDesc => contacts.OrderByDescending(s => s.Position.Tittle),
+                _ => contacts.OrderBy(s => s.Surname),
+            };
+            return View(contacts.AsNoTracking().ToList());
+        }
 
         [HttpGet]
         [Authorize(Roles = "department, programmer, direktor")]
@@ -55,7 +69,7 @@ namespace Diploma_project.Controllers
         }
 
         [HttpGet, AllowAnonymous]
-        public ActionResult AboutCompany() => View(db.Services.ToList());
+        public ActionResult AboutCompany() => View(db.Services.Include(u => u.User).ToList());
 
         [HttpGet]
         [Authorize(Roles = "programmer, direktor, section manager")]

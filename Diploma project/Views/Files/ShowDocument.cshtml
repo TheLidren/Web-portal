@@ -64,10 +64,10 @@
             </div>
         </div>
         <div class="col-9 bg-white" id="doc">
-            <div class="prokrutka p-4">
+            <div class="prokrutka p-4 mb-5">
                 @Html.Raw(ViewBag.WordHtml)
             </div>
-            <div class="ya-share2 text-right mr-3 mt-3 mb-3" data-services="vkontakte,twitter,facebook,odnoklassniki" data-size="l" data-title=@Model.FilesDocuments.Tittle data-counter></div>
+            @*<div class="ya-share2 text-right mr-3 mt-3 mb-3" data-services="vkontakte,twitter,facebook,odnoklassniki" data-size="l" data-url="@Request.RawUrl" data-title=@Model.FilesDocuments.Tittle data-counter></div>*@
         </div>
         @if (Request.IsAuthenticated)
         {

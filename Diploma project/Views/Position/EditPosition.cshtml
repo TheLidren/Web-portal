@@ -15,11 +15,11 @@
             @Html.HiddenFor(m => m.Id)
             @Html.HiddenFor(m => m.Status)
             <div class="form-row">
-                <div class="m-3 form-group col-md-6">
-                    @Html.TextBoxFor(m => m.Tittle, new { type = "text", @class = "form-control", placeholder = "Введите название", @required = "required", @pattern = "^([А-ЯЁ]{1}[а-яё-/s]{1,50})$", title = "Текст должен содержать только латинские буквы и дефис" })
+                <div class=" mt-1 ml-2 form-group col-12">
+                    @Html.TextBoxFor(m => m.Tittle, new { type = "text", @class = "form-control w-75", placeholder = "Введите название", @required = "required", @pattern = "^([А-ЯЁ]{1}[а-яё-/s]{1,50})$", title = "Текст должен содержать только латинские буквы и дефис" })
                     @Html.ValidationMessageFor(m => m.Tittle)
                 </div>
-                <input type="submit" class="m-3 btn btn-primary mt-3" value="Сохранить изменения" />
+                <input type="submit" class="ml-3 btn btn-primary" value="Сохранить изменения" />
             </div>
         }
     </div>

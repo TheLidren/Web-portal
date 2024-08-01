@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
@@ -24,29 +25,56 @@ namespace Diploma_project.Controllers
         readonly Regex trimmerspace = new(@"\s\s+");
         private ApplicationUserManager UserManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
         private ApplicationRoleManager RoleManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
+        const int pageSize = 10;
 
         //Show users chat
         [HttpGet]
-        public ActionResult ChatAccount(string userId)
+        public ActionResult ChatAccount(string userId, int? id)
         {
+            int page = id ?? 1;
+            User myUser = null;
+            myUser = UserManager.FindByEmail(User.Identity.Name);
             if (userId != null)
             {
                 user = db.Users.Find(userId);
-                User myUser = UserManager.FindByEmail(User.Identity.Name);
                 if (user.Id == myUser.Id)
-                    messageList = db.Messages.Where(u => u.UserName == myUser.UserName && u.UserId == myUser.Id).Where(u => u.PersonalMessage).ToList();
+                {
+                    var itemsToSkip = page * pageSize;
+                    messageList = db.Messages.Where(u => u.UserName == myUser.UserName && u.UserId == myUser.Id).Where(u => u.PersonalMessage).OrderBy(m => m.When).Take(itemsToSkip).ToList();
+                    ViewBag.Count = db.Messages.Where(u => u.UserName == myUser.UserName && u.UserId == myUser.Id).Where(u => u.PersonalMessage).Count();
+                    foreach (var item in messageList)
+                        if (item.UserId == myUser.Id)
+                        {
+                            item.Read = true;
+                            db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                }
                 else
-                    messageList = db.Messages.Where(u => u.UserName == user.UserName || u.UserName == myUser.UserName && u.UserId == myUser.Id || u.UserId == user.Id).Where(u => !u.PersonalMessage).ToList();
+                {
+                    var itemsToSkip = page * pageSize;
+                    messageList = db.Messages.Where(u => u.UserName == myUser.UserName && u.UserId == user.Id || u.UserName == user.UserName && u.UserId == myUser.Id).Where(u => !u.PersonalMessage).OrderBy(m => m.When).Take(pageSize).ToList();
+                    ViewBag.Count = db.Messages.Where(u => u.UserName == myUser.UserName && u.UserId == user.Id || u.UserName == user.UserName && u.UserId == myUser.Id).Where(u => !u.PersonalMessage).Count();
+                    foreach (var item in messageList)
+                        if (item.UserId == myUser.Id)
+                        {
+                            item.Read = true;
+                            db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                }
             }
             else
                 messageList = null;
-            Role role = RoleManager.Roles.Single(r => r.Name == "direktor");
+            //Role role = RoleManager.Roles.Single(r => r.Name == "direktor");
             ChatViewModel viewModel = new()
             {
-                Users = db.Users.ToList(),
+                Users = db.Users.Include(u => u.Position).Include(u => u.Messages).OrderByDescending(u => u.Messages.OrderByDescending(u => u.When).FirstOrDefault().When).ToList(),
                 Messages = messageList,
-                SelectUser = db.Users.Find(userId)
+                SelectUser = user,
+                ReadMessage = db.Messages.Where(u => u.UserId == myUser.Id && !u.Read && !u.PersonalMessage).ToList()
             };
+            ViewBag.Page = page;
             ViewBag.UserName = User.Identity.Name;
             return View(viewModel);
         }

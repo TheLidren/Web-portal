@@ -22,7 +22,7 @@ namespace Diploma_project.Controllers
             UserPositionViewModel viewModel = new()
             {
                 Users = db.Users.Include(u => u.Position).Where(u => u.Status).ToList(),
-                Positions = db.Positions.ToList()
+                Positions = db.Positions.Where(u => u.Status).ToList()
             };
             return View(viewModel);
         }

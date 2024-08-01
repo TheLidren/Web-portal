@@ -19,20 +19,19 @@
                             <a href=@Url.Action("ShowDocument", "Files", new { id = item.FilesDocuments.Id}) class="h5 link-dark">@item.FilesDocuments.Tittle</a>
                         </p>
                     </div>
-                    <div class="col-3 mt-3">
+                    <div class="col-2 mt-2">
                         <br />
                         @if (item.User.UserName == User.Identity.Name || User.IsInRole("programmer"))
                         {
-                            <a class="h6 text-decoration-none pr-4" href=@Url.Action("EditDocument", "Files", new { id = item.FilesDocuments.Id })>Изменить</a>
+                            <a class="h6 text-decoration-none pr-4" href=@Url.Action("EditDocument", "Files", new { id = item.Id })>Изменить</a>
                         }
                         @if (User.IsInRole("programmer"))
                         {
-                            <a class="h6 text-decoration-none" style="color: red" href=@Url.Action("DeleteDocument", "Files", new { id = item.FilesDocuments.Id })>Удалить документ</a>
+                            <a class="h6 text-decoration-none" style="color: red" href=@Url.Action("DeleteDocument", "Files", new { id = item.Id })>Удалить документ</a>
                         }
                     </div>
                 }
             </div>
-
         </div>
     </div>
 </div>

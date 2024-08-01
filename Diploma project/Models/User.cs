@@ -8,10 +8,7 @@ namespace Diploma_project.Models
 {
     public class User : IdentityUser
     {
-        public User()
-        {
-            Messages = new HashSet<Message>();
-        }
+        public User() => Messages = new HashSet<Message>();
 
         public string Name { get; set; }
 
@@ -40,7 +37,6 @@ namespace Diploma_project.Models
         public virtual ICollection<Services> Services { get; set; }
 
         public virtual ICollection<FilesDocuments> FilesDocuments { get; set; }
-
         public string ReceiveUserId (string name, UserManager<User> manager)
         {
             User user = manager.FindByEmail(name);

@@ -20,7 +20,7 @@
     <div class="ml-3 form-group col-md-6">
         @Html.LabelFor(m => m.Date, "Дата публикации:", new { @class = "mb-2" })
         @Html.TextBoxFor(model => model.Date, new { type = "date", @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Date)
+        @Html.ValidationMessage("DatePublish")
     </div>
     <div class="ml-3 form-group col-md-6">
         @Html.LabelFor(m => m.LongDesc, "Описание новости:", new { @class = "mb-2" })

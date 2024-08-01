@@ -3,6 +3,7 @@ using Diploma_project.Models;
 using Diploma_project.ViewModels;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Office.Interop.Word;
+using PagedList;
 using System;
 using System.Data.Entity;
 using System.Diagnostics;
@@ -21,6 +22,7 @@ namespace Diploma_project.Controllers
     {
         readonly PortalContext db = new();
         readonly Regex trimmerspace = new(@"\s\s+");
+        readonly int pageSize = 5;
         User user;
         private ApplicationUserManager UserManager { get => HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
 
@@ -28,15 +30,17 @@ namespace Diploma_project.Controllers
         public string ReceiveWordHtml(FilesDocuments files)
         {
             object documentFormat = 8;
-            string randomName = DateTime.Now.Ticks.ToString();
-            object htmlFilePath = Server.MapPath("~/Files/Temp/") + randomName + ".htm";
+            object htmlFilePath = Server.MapPath("~/Files/Temp/") + files.FileName.Substring(0, files.FileName.LastIndexOf(".")) + ".htm";
             object fileSavePath = files.FilePath;
-            _Application applicationclass = new Application();
-            applicationclass.Documents.Open(ref fileSavePath);
-            applicationclass.Visible = false;
-            Document document = applicationclass.ActiveDocument;
-            document.SaveAs(ref htmlFilePath, ref documentFormat);
-            document.Close();
+            if (!System.IO.File.Exists(htmlFilePath.ToString()))
+            {
+                _Application applicationclass = new Application();
+                applicationclass.Documents.Open(ref fileSavePath);
+                applicationclass.Visible = false;
+                Document document = applicationclass.ActiveDocument;
+                document.SaveAs(ref htmlFilePath, ref documentFormat);
+                document.Close();
+            }
             string wordHTML = null;
             using (FileStream fstream = System.IO.File.OpenRead(htmlFilePath.ToString()))
             {
@@ -47,15 +51,15 @@ namespace Diploma_project.Controllers
             }
             foreach (Match match in Regex.Matches(wordHTML, "<v:imagedata.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase))
                 wordHTML = Regex.Replace(wordHTML, match.Groups[1].Value, "Files/Temp/" + match.Groups[1].Value);
-            System.IO.File.Delete(htmlFilePath.ToString());
-            Directory.Delete(Server.MapPath("~/Files/Temp/") + randomName + ".files", true);
-            foreach (var process in Process.GetProcessesByName("WINWORD"))
-                process.Kill();
             return wordHTML;
         }
 
         [HttpGet]
-        public ActionResult ListDocuments() => View(db.FilesDocuments.Include(u => u.User).OrderByDescending(u => u.DatePublish).Where(u => u.Status).ToList());
+        public ActionResult ListDocuments(int? page)
+        {
+            int pageNumber = (page ?? 1);
+            return View(db.FilesDocuments.Include(u => u.User).OrderByDescending(u => u.DatePublish).Where(u => u.Status).ToPagedList(pageNumber, pageSize));
+        }
 
         [HttpGet, Authorize]
         public async Task<ActionResult> ListDocumentsFavorites()
@@ -71,7 +75,7 @@ namespace Diploma_project.Controllers
             if (files == null)
                 return RedirectToAction("Error", "Home");
             FilesDocumentsFavorites filesDocumentsFavorites = new();
-            if(User.Identity.Name != null)
+            if(User.Identity.Name != "")
             {
                 user = await UserManager.FindByEmailAsync(User.Identity.Name);
                 filesDocumentsFavorites = db.filesDocumentsFavorites.Where(u => u.FilesDocumentsId == files.Id && u.UserId == user.Id).FirstOrDefault();
@@ -180,6 +184,13 @@ namespace Diploma_project.Controllers
             files.Status = false;
             db.Entry(files).State = EntityState.Modified;
             db.SaveChanges();
+            string randomName = files.FileName.Substring(0, files.FileName.LastIndexOf("."));
+            object htmlFilePath = Server.MapPath("~/Files/Temp/") + randomName + ".htm";
+            if (System.IO.File.Exists(htmlFilePath.ToString()))
+            {
+                System.IO.File.Delete(htmlFilePath.ToString());
+                Directory.Delete(Server.MapPath("~/Files/Temp/") + randomName + ".files", true);
+            }
             return RedirectToAction("ListDocuments");
         }
 
@@ -238,6 +249,18 @@ namespace Diploma_project.Controllers
             string wordHTML = ReceiveWordHtml(files);
             ViewBag.WordHtml = wordHTML.Substring(wordHTML.IndexOf("<div class=WordSection1>"));
             return View();
+        }
+
+        [HttpGet, Authorize(Roles = "programmer")]
+        public ActionResult DeleteComment(int id)
+        {
+            FilesDocumentsComment files = db.FilesDocumentsComments.Find(id);
+            if (files == null)
+                return RedirectToAction("Error", "Home");
+            int? filesDocumentsId = files.FilesDocumentsId;
+            db.FilesDocumentsComments.Remove(files);
+            db.SaveChanges();
+            return RedirectToAction("ShowDocument", new { id = filesDocumentsId });
         }
     }
 }

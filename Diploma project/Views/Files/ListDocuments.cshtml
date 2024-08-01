@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Diploma_project.Models.FilesDocuments>
+﻿@model PagedList.IPagedList<Diploma_project.Models.FilesDocuments>
+@using PagedList.Mvc;
+@Styles.Render("~/Content/PagedList.css")
 
 @{
     ViewBag.Title = "Документооборот";
@@ -7,7 +9,7 @@
 <div class="container" style="min-height: 400px;">
     <p class="mt-2"><a class="h6 text-decoration-none" href=@Url.Action("Index", "Home")>Главная </a>/<i> Документооборот</i></p>
     <h4>Документооборот</h4>
-    <div class="row mb-5">
+    <div class="row mb-3">
         <div class="col-12 bg-white">
             <div class="row">
                 @if (Request.IsAuthenticated)
@@ -16,14 +18,14 @@
                 }
                 @foreach (var item in Model)
                 {
-                    <div class="col-9 mt-3">
+                    <div class="col-10 mt-3">
                         <p>
                             <span class="fw-light">@item.User.Email: @item.DatePublish.ToLongDateString()</span>
                             <br />
                             <a href=@Url.Action("ShowDocument", "Files", new { id = item.Id}) class="h5 link-dark">@item.Tittle</a>
                         </p>
                     </div>
-                    <div class="col-3 mt-3">
+                    <div class="col-2 mt-2">
                         <br />
                         @if (item.User.UserName == User.Identity.Name || User.IsInRole("programmer"))
                         {
@@ -36,8 +38,11 @@
                     </div>
                 }
             </div>
-
         </div>
+        @if (Model.Count > 5)
+        {
+            @Html.PagedListPager(Model, page => Url.Action("ListDocuments", "Files", new { page }))
+        }
     </div>
 </div>
 

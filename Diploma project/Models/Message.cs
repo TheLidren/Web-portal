@@ -27,6 +27,8 @@ namespace Diploma_project.Models
 
         public bool PersonalMessage { get; set; }
 
+        public bool Read { get; set; }
+
 
     }
 }

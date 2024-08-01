@@ -3,6 +3,14 @@ using System.Web.Mvc;
 
 namespace Diploma_project.Models
 {
+    public enum SortStateContact
+    {
+        SurnameAsc,  
+        SurnameDesc, 
+        PositionAsc, 
+        PositionDesc
+    }
+
     public class ContactInformation
     {
         [HiddenInput(DisplayValue = false)]

@@ -95,9 +95,9 @@ namespace Diploma_project.Controllers
                     filesGalery.FileString = imageData;
                     filesGalery.FileName = uploadImage.FileName;
                     filesGalery.Format = uploadImage.ContentType;
-                    user = await UserManager.FindByEmailAsync(User.Identity.Name);
-                    filesGalery.UserId = user.Id;
                 }
+                user = await UserManager.FindByEmailAsync(User.Identity.Name);
+                filesGalery.UserId = user.Id;
                 db.Entry(filesGalery).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("ListPhoto");

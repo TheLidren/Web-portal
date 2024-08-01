@@ -34,15 +34,18 @@ namespace Diploma_project.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> AddNews(News news, HttpPostedFileBase[] uploadImage)
         {
-            if (news.Date >= DateTime.Now.AddMonths(2) || news.Date <= DateTime.Now.AddMonths(-1))
+            if (news.Date >= DateTime.Now.AddMonths(2) || news.Date <= DateTime.Now.AddMonths(-2))
             {
-                ModelState.AddModelError("DatePublish", $"Укажите дату от {DateTime.Now.AddMonths(-1).ToShortDateString()} до {DateTime.Now.AddMonths(2).ToShortDateString()}");
+                ModelState.AddModelError("DatePublish", $"Укажите дату от {DateTime.Now.AddMonths(-2).ToShortDateString()} до {DateTime.Now.AddMonths(2).ToShortDateString()}");
                 return View(news);
             }
-            if (ModelState.IsValid && uploadImage != null)
+            if (ModelState.IsValid && uploadImage[0] != null)
             {
                 news.Tittle = trimmerspace.Replace(news.Tittle, " ").Trim();
-                news.LongDesc = news.LongDesc.Replace("\r\n", replace);
+                if(Regex.IsMatch(news.LongDesc, "\r\n"))
+                    news.LongDesc = news.LongDesc.Replace("\r\n", replace);
+                else
+                    news.LongDesc += replace;
                 user = await UserManager.FindByEmailAsync(User.Identity.Name);
                 news.UserId = user.Id;
                 db.News.Add(news);
@@ -105,7 +108,10 @@ namespace Diploma_project.Controllers
                     }
                 }
                 news.Tittle = trimmerspace.Replace(news.Tittle, " ").Trim();
-                news.LongDesc = news.LongDesc.Replace("\r\n", replace);
+                if (Regex.IsMatch(news.LongDesc, "\r\n"))
+                    news.LongDesc = news.LongDesc.Replace("\r\n", replace);
+                else
+                    news.LongDesc += replace;
                 user = await UserManager.FindByEmailAsync(User.Identity.Name);
                 news.UserId = user.Id;
                 db.Entry(news).State = EntityState.Modified;
@@ -121,6 +127,11 @@ namespace Diploma_project.Controllers
             News news = db.News.Find(id);
             if (news == null)
                 return RedirectToAction("Error", "Home");
+            foreach (var item in db.NewsImages.Where(u => u.NewsId == id).ToList())
+            {
+                db.NewsImages.Remove(item);
+                db.SaveChanges();
+            }
             db.News.Remove(news);
             db.SaveChanges();
             return RedirectToAction("ListNews");

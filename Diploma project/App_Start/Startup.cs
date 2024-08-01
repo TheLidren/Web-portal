@@ -16,7 +16,7 @@ namespace Diploma_project.App_Start
     {
         public void Configuration(IAppBuilder app)
         {
-            //Database.SetInitializer<PortalContext>(new AppDbInitializer());
+            //Database.SetInitializer(new AppDbInitializer());
             app.CreatePerOwinContext(PortalContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create); 

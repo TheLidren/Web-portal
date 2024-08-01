@@ -68,7 +68,7 @@ namespace Diploma_project.Controllers
                 return RedirectToAction("Error", "Home");
             position.Status = false;
             db.SaveChanges();
-            return RedirectToAction("ListPosition");
+            return RedirectToAction("ListUser", "Home");
         }
     }
 }

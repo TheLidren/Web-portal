@@ -69,38 +69,34 @@
             <p>@Html.ActionLink("Подробнее", "AboutCompany", "Company", null, new { @class = "btn btn-primary" })</p>
         </div>
     </div>
-    <div class="row">
+    <div class="row pb-4">
         <h4 class="text-black col-8">Новости компании</h4>
         @Html.ActionLink("Смотреть все >", "ListNews", "News", null, new { @class = "h5 text-primary text-decoration-none text-right col-4" })
         <hr style="width:98%" />
         @foreach (var item in Model.Take(2))
         {
-            string path = Convert.ToBase64String(@item.NewsImages.Where(u => u.NewsId == item.Id).FirstOrDefault().ImageString);
-            <div class="col-md-3 mb-3">
+            string path = Convert.ToBase64String(item.NewsImages.Where(u => u.NewsId == item.Id).FirstOrDefault().ImageString);
+            <div class="col-3">
                 <a href=@Url.Action("DetailsNews", "News", new { id = item.Id})>
-                    <img src="data:image/jpeg;base64,@path" alt="@item.Tittle" class="w-100 h-100 mr-3" />
+                    <img src="data:image/jpeg;base64,@path" alt="@item.Tittle"style="height: 90%!important; max-height: 300px;" class="w-100 mr-3" />
                 </a>
             </div>
-            <div class="col-md-9">
-                <span class="fw-light">@item.Date.ToLongDateString()</span>
+            <div class="col-8">
+                <span class="fw-light">@item.User.Email: @item.Date.ToLongDateString()</span>
                 <br />
-                <a href=@Url.Action("DetailsNews", "News", new { id = item.Id}) class="h2 text-decoration-none">@item.Tittle</a>
+                <a href=@Url.Action("DetailsNews", "News", new { id = item.Id}) class="h4 text-decoration-none">@item.Tittle</a>
                 <p class="mt-2">
                     @item.LongDesc.Substring(0, item.LongDesc.IndexOf("</p>"))
                 </p>
+                @if (User.IsInRole("secretary") && User.Identity.Name == item.User.Name || User.IsInRole("programmer") || User.IsInRole("direktor"))
+                {
+                    <a class="btn btn-info" href=@Url.Action("EditNews", "News", new { id = item.Id })>Изменить</a>
+                }
+                @if (User.IsInRole("programmer"))
+                {
+                    <a href=@Url.Action("DeleteNews", "News", new { id = item.Id }) class="btn btn-danger">Удалить</a>
+                }
             </div>
         }
-        @*<div class="col-md-3">
-            <a href="#"><img src="~/Image/Company.jpg" class="w-100 h-100 mr-3" /></a>
-        </div>
-        <div class="col-md-9">
-            @Html.ActionLink("Новости компании", "AboutCompany", "Company", null, new { @class = "h2 text-black" })
-            <p class="mt-2">
-                Открытое Акционерное Общество «Белэлектромонтаж» - одна из старейших организаций Республики Беларусь,
-                успешно функционирующая более 75 лет (год образования – 1944) на строительных рынках как Республики Беларусь,
-                так и России, стран СНГ и дальнего зарубежья. ОАО «Белэлектромонтаж» входит в структуру холдинга «БЕЛСТРОЙЦЕНТР-ХОЛДИНГ» и
-                является подведомственной организацией Министерства архитектуры и строительства Республики Беларусь.
-            </p>
-        </div>*@
     </div>
 </div>

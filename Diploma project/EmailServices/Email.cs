@@ -34,6 +34,7 @@ namespace Diploma_project.EmailServices
         [RegularExpression(@"^(\+375|80)(29|25|44|33)(\d{7})$", ErrorMessage = "Некорректно введён номер телефона")]
         public string Phone { get; set; }
 
+        [Required(ErrorMessage = "Обязательное поле для ввода")]
         public string Message { get; set; }
 
         //Send message to directors email address
@@ -45,7 +46,7 @@ namespace Diploma_project.EmailServices
             mail.Subject = email.Subject;
             mail.Body = $"<p>{email.Message}</p><i>Номер телефона отправителя: {email.Phone}</i>";
             mail.IsBodyHtml = true;
-            if (uploadDocx != null)
+            if (uploadDocx[0] != null)
                 foreach (var file in uploadDocx)
                 {
                     string path = Path.GetTempPath() + file.FileName;

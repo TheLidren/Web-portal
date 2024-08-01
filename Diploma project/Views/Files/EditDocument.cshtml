@@ -13,27 +13,28 @@
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.FilePath)
         @Html.HiddenFor(m => m.FileName)
+        @Html.HiddenFor(m => m.UserId)
         @Html.HiddenFor(m => m.Status)
-        <div class="m-lg-3 mt-3 form-group col-md-6">
+        <div class="ml-3 mt-3 form-group col-md-6">
             <h2>Изменить документ № @Model.Id</h2>
         </div>
-        <div class="m3-3 form-group col-md-6">
+        <div class="ml-3 form-group col-md-6">
             @Html.LabelFor(m => m.Tittle, "Заголовок:", new { @class = "mb-2" })
             @Html.TextBoxFor(m => m.Tittle, new { @class = "form-control", placeholder = "Введите заглавие" })
             @Html.ValidationMessageFor(m => m.Tittle)
         </div>
-        <div class="m3-3 form-group col-md-6">
+        <div class="ml-3 form-group col-md-6">
             @Html.LabelFor(m => m.DatePublish, "Дата публикации:", new { @class = "mb-2" })
             @Html.TextBoxFor(model => model.DatePublish, new { type = "date", @class = "form-control", @Value = Model.DatePublish.ToString("yyyy-MM-dd"), @readonly = "readonly" })
             @Html.ValidationMessageFor(m => m.DatePublish)
         </div>
-        <div class="m3-3 form-group col-md-6">
+        <div class="ml-3 form-group col-md-6">
             @Html.Label("uploadDocx", "Документ для публикации:", new { @class = "mb-2" })
             @Html.TextBox("uploadDocx", null, new { type = "file", @class = "form-control", @id = "uploadDocx", @accept = ".pdf, .doc, .docx" })
             @Html.ValidationMessage("uploadDocx")
         </div>
         <div class="form-group col-md-6">
-            <input type="submit" class="m3-3 btn btn-primary" value="Сохранить изменения" />
+            <input type="submit" class="ml-3 btn btn-primary" value="Сохранить изменения" />
         </div>
     </div>
 }

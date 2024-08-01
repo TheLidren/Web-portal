@@ -116,7 +116,11 @@ namespace Diploma_project.Controllers
             user = UserManager.FindByEmail(User.Identity.Name);
             if (user == null)
                 return RedirectToAction("Error", "Home");
-            SelectList positions = new(db.Positions.Where(u => u.Status), "Id", "Tittle", user.PositionId);
+            SelectList positions;
+                if(User.IsInRole("direktor"))
+                positions = new(db.Positions, "Id", "Tittle", user.PositionId);
+            else
+                positions = new(db.Positions.Where(u => u.Status), "Id", "Tittle", user.PositionId);
             ViewBag.positions = positions;
             EditAccountViewModel editAccount = new() {
                 Id = user.Id,
@@ -310,7 +314,7 @@ namespace Diploma_project.Controllers
                 UserId = user.Id,
                 UserEmail = user.Email,
                 UserRoles = await UserManager.GetRolesAsync(userId),
-                AllRoles = RoleManager.Roles.ToList()
+                AllRoles = RoleManager.Roles.ToList(),
             };
             return PartialView(model);
         }

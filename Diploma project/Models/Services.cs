@@ -13,7 +13,7 @@ namespace Diploma_project.Models
         public string Tittle { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле для ввода")]
-        [RegularExpression(@"^[а-яА-ЯёЁ0-9a-z\rn\s\-',:;.<>=\\/]+$", ErrorMessage = "Проверьте корректность ввода")]
+        [RegularExpression(@"^[а-яА-ЯёЁ0-9a-z\rn\s\-',():;.<>=\\/]+$", ErrorMessage = "Проверьте корректность ввода")]
         public string ListServices { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }
